@@ -12,8 +12,8 @@ from keras.applications.vgg16 import preprocess_input
 import numpy as np
 import os
 
-n_caracteristicas_coletadas = 512 + 1
-#n_caracteristicas_coletadas = 3585 + 1
+#n_caracteristicas_coletadas = 512 + 1
+n_caracteristicas_coletadas = 3585 + 1
 total_de_imagens = 1000 + 1
 intervalo_de_escrita = 2
 texto = ""
@@ -57,6 +57,7 @@ if os.path.exists(caminho_img):
         
         #extrai características (apenas parte delas)
         for i in range(len(features[0][0][0])):
+            #para rodar com 512 caracteristicas precisa comentar esse for
             for j in range(len(features[0][0])):
                 texto += (str(features[0][0][j][i]))
                 texto += (",")
@@ -73,7 +74,7 @@ if os.path.exists(caminho_img):
             
 else:
     print("\n << Você precisa criar um diretório com o nome 'imagens'!! >>") 
-    print("Cuidado, o arquivo que o professor disponibilizou tem uma extensão '.org' que poderá causar problemas. >>")
+    print("\n> Cuidado, o arquivo que o professor disponibilizou tem uma extensão '.org' que poderá causar problemas. >>")
 
 
 
