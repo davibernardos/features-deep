@@ -18,6 +18,10 @@ model = VGG16(weights='imagenet', include_top=False)
 texto = ""
 textoin = ""
 
+for i in range(1,513):
+    texto +=  str(i) + ";"
+    texto += "class\n"
+
 #passa pelo repositório de imagens
 for a in range(1,1001):
     
@@ -32,13 +36,7 @@ for a in range(1,1001):
     x = preprocess_input(x)
     
     features = model.predict(x)
-
-
-    for i in range(1,len(features[0][0][0])):
-        texto +=  str(i) + ";"
-    texto += "class\n"
-    
-    
+        
     #extrai características (apenas parte delas)
     for i in range(len(features[0][0][0])):
         texto += (str(features[0][0][0][i]))
@@ -48,7 +46,7 @@ for a in range(1,1001):
     print("classe: " + str(classe))
     texto += (str(classe) + "\n")
     
-    if a % 100 == 0:
+    if a % 10 == 0:
         arqin = open("saidaFeatures.csv", "r")
         textoin = arqin.read()
         textoin += texto
