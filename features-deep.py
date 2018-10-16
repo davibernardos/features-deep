@@ -1,82 +1,90 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 15 05:01:40 2018
+Created on Mon Oct 15 06:30:21 2018
 
 @author: davibernardo
 """
 
-# BIBLIOTECAS
-import tensorflow as tf
-from tensorflow import keras
+from keras.applications.vgg16 import VGG16
+from keras.preprocessing import image
+from keras.applications.vgg16 import preprocess_input
 import numpy as np
-import matplotlib.pyplot as plt
 
-print(tf.__version__)
+#treinamento do modelo
+model = VGG16(weights='imagenet', include_top=False)
 
-weights = np.load('vgg16_weights.npz')
-keys = sorted(weights.keys())
-print(np.shape(weights['conv3_1_b']))
+#armazenamento temporário de características
+texto = ""
+textoin = ""
+
+#passa pelo repositório de imagens
+for a in range(151,201):
+    
+    #as imagens estão soltas no diretório corrente 
+    #para evitar as diferenças de sistema operacional 
+    img_path = str(a-1) + '.jpg'
+    print(img_path)
+    
+    img = image.load_img(img_path, target_size=(224, 224))
+    x = image.img_to_array(img)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)
+    
+    features = model.predict(x)
+    
+    #extrai características (apenas parte delas)
+    for i in range(len(features[0][0][0])):
+        texto += (str(features[0][0][0][i]))
+        texto += (";")
+    
+    #verifica a classe da imagem
+    print(str(int(a/100)))
+    texto += (str(int(a/100)) + "\n")        
+
+arqin = open("saidaFeatures.csv", "r")
+textoin = arqin.read()
+textoin += texto
+
+arq = open("saidaFeatures.csv", "w")
+arq.write(str(textoin))
+arq.close()
 
 
-
-#for i, k in enumerate(keys):
- #   print ("i:{} k:{} weights:{}".format(i, k, np.shape(weights[k])))
-
-#fashion_mnist = keras.datasets.fashion_mnist
+#img_path = "image/" + str(a) + '.jpg'
+    
+#print(features[0][0][0][0])
+    
+#    for i in features:
+#        for j in i:
+#            for k in j:
+#                for l in k:
+#                    arq.write(str(l)+";")
+                    
+#    if cont == 99:
+#        cont = 0
+#        arq.write(str(class_cont) + "\n")
+#        class_cont += 1
+#    else:
+#        cont += 1
 
 '''
-    def load_weights(self, weight_file, sess):
-        weights = np.load(weight_file)
-        keys = sorted(weights.keys())
-        for i, k in enumerate(keys):
-            print ("i:{} k:{} weights:{}".format(i, k, np.shape(weights[k])))
-            sess.run(self.parameters[i].assign(weights[k]))
 
+from keras.applications.resnet50 import ResNet50
+from keras.preprocessing import image
+from keras.applications.resnet50 import preprocess_input, decode_predictions
+import numpy as np
 
+model = ResNet50(weights='imagenet')
 
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+img_path = 'elephant.jpg'
+img = image.load_img(img_path, target_size=(224, 224))
+x = image.img_to_array(img)
+x = np.expand_dims(x, axis=0)
+x = preprocess_input(x)
 
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 
-               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
-print(train_images.shape)
-print(len(train_labels))
-print(train_labels)
-print(test_images.shape)
-print(len(test_labels))
-
-plt.figure()
-plt.imshow(train_images[0])
-plt.colorbar()
-plt.grid(False)
-
-train_images = train_images / 255.0
-test_images = test_images / 255.0
-
-print(train_images[0])
-
-plt.figure(figsize=(10,10))
-for i in range(25):
-    plt.subplot(5,5,i+1)
-    plt.xticks([])
-    plt.yticks([])
-    plt.grid(False)
-    plt.imshow(train_images[i], cmap=plt.cm.binary)
-    plt.xlabel(class_names[train_labels[i]])
-    
-model = keras.Sequential([
-    keras.layers.Flatten(input_shape=(28, 28)),
-    keras.layers.Dense(128, activation=tf.nn.relu),
-    keras.layers.Dense(10, activation=tf.nn.softmax)
-])
-    
-model.compile(optimizer=tf.train.AdamOptimizer(), 
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-
-model.fit(train_images, train_labels, epochs=5)
-test_loss, test_acc = model.evaluate(test_images, test_labels)
-
-print('Test accuracy:', test_acc)
-            
+preds = model.predict(x)
+# decode the results into a list of tuples (class, description, probability)
+# (one such list for each sample in the batch)
+print('Predicted:', decode_predictions(preds, top=3)[0])
 '''
