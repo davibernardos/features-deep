@@ -19,12 +19,12 @@ texto = ""
 textoin = ""
 
 #passa pelo repositório de imagens
-for a in range(151,201):
+for a in range(1,1001):
     
     #as imagens estão soltas no diretório corrente 
     #para evitar as diferenças de sistema operacional 
     img_path = str(a-1) + '.jpg'
-    print(img_path)
+    print("processando: " + img_path)
     
     img = image.load_img(img_path, target_size=(224, 224))
     x = image.img_to_array(img)
@@ -32,41 +32,32 @@ for a in range(151,201):
     x = preprocess_input(x)
     
     features = model.predict(x)
+
+
+    for i in range(1,len(features[0][0][0])):
+        texto +=  str(i) + ";"
+    texto += "class\n"
+    
     
     #extrai características (apenas parte delas)
     for i in range(len(features[0][0][0])):
         texto += (str(features[0][0][0][i]))
         texto += (";")
     
-    #verifica a classe da imagem
-    print(str(int(a/100)))
-    texto += (str(int(a/100)) + "\n")        
-
-arqin = open("saidaFeatures.csv", "r")
-textoin = arqin.read()
-textoin += texto
-
-arq = open("saidaFeatures.csv", "w")
-arq.write(str(textoin))
-arq.close()
-
-
-#img_path = "image/" + str(a) + '.jpg'
+    classe = int(a/100)
+    print("classe: " + str(classe))
+    texto += (str(classe) + "\n")
     
-#print(features[0][0][0][0])
-    
-#    for i in features:
-#        for j in i:
-#            for k in j:
-#                for l in k:
-#                    arq.write(str(l)+";")
-                    
-#    if cont == 99:
-#        cont = 0
-#        arq.write(str(class_cont) + "\n")
-#        class_cont += 1
-#    else:
-#        cont += 1
+    if a % 100 == 0:
+        arqin = open("saidaFeatures.csv", "r")
+        textoin = arqin.read()
+        textoin += texto
+        texto = "" 
+
+        arqout = open("saidaFeatures.csv", "w")
+        arqout.write(str(textoin))
+        arqout.close()
+
 
 '''
 
