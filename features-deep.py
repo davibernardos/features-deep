@@ -19,8 +19,8 @@ texto = ""
 textoin = ""
 
 for i in range(1,513):
-    texto +=  str(i) + ";"
-    texto += "class\n"
+    texto +=  str(i) + ","
+texto += "class\n"
 
 #passa pelo repositório de imagens
 for a in range(1,1001):
@@ -40,7 +40,7 @@ for a in range(1,1001):
     #extrai características (apenas parte delas)
     for i in range(len(features[0][0][0])):
         texto += (str(features[0][0][0][i]))
-        texto += (";")
+        texto += (",")
     
     classe = int(a/100)
     print("classe: " + str(classe))
