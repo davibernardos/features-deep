@@ -14,8 +14,8 @@ import os
 
 #n_caracteristicas_coletadas = 512 + 1
 n_caracteristicas_coletadas = 3585 + 1
-total_de_imagens = 1000 + 1
-intervalo_de_escrita = 2
+total_de_imagens = 1000
+intervalo_de_escrita = 10
 texto = ""
 caminho_img = os.path.abspath("imagens")
 
@@ -38,14 +38,15 @@ if os.path.exists(caminho_img):
     print("\n> Diretório de imagens ok.")
     
     print("\n> Iniciando a extração de caracteristicas de {} imagens...".format(total_de_imagens))
-    for a in range(1,total_de_imagens):
-        
-        #as imagens estão soltas no diretório corrente 
-        #para evitar as diferenças de sistema operacional
+    #for a in range(1,total_de_imagens):
+    
+    a = 0
+    passo = 1
+    while a <= total_de_imagens:    
         if os.name == "posix":
-            img_path = "{}/{}.jpg".format(caminho_img, str(a-1))
+            img_path = "{}/{}.jpg".format(caminho_img, str(a))
         else:
-            img_path = "{}\{}.jpg".format(caminho_img, str(a-1))
+            img_path = "{}\{}.jpg".format(caminho_img, str(a))
        
         print("processando: {}".format(os.path.basename(img_path)))
         img = image.load_img(img_path, target_size=(224, 224))
@@ -66,11 +67,17 @@ if os.path.exists(caminho_img):
         print("classe: " + str(classe))
         texto += (str(classe) + "\n")
             
-        if a % intervalo_de_escrita == 0:
+        if passo == intervalo_de_escrita:
             arq = open("saidaFeatures.csv", "a")
             arq.write(str(texto))
             arq.close()
             texto = ""
+            #pega apenas as 100-a primeiras imagens da classe 
+            #a += 90 
+            passo = 0
+         
+        a += 1
+        passo += 1
             
 else:
     print("\n << Você precisa criar um diretório com o nome 'imagens'!! >>") 
