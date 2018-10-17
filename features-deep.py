@@ -15,7 +15,7 @@ import os
 #n_caracteristicas_coletadas = 512 + 1
 n_caracteristicas_coletadas = 3584 + 1
 total_de_imagens = 1000
-intervalo_de_escrita = 10
+intervalo_de_escrita = 20
 texto = ""
 caminho_img = os.path.abspath("imagens")
 
@@ -31,7 +31,7 @@ model = VGG16(weights='imagenet', include_top=False)
 
 print("\n> Criando o cabeçalho do aquivo csv com {} colunas...".format(n_caracteristicas_coletadas))
 for i in range(1,n_caracteristicas_coletadas):
-    texto +=  str(i) + ","
+    texto += "{},".format(str(i))
 texto += "class\n"
 
 if os.path.exists(caminho_img):
@@ -64,8 +64,8 @@ if os.path.exists(caminho_img):
                 texto += (",")
             
         classe = int(a/100)
-        print("classe: " + str(classe))
-        texto += (str(classe) + "\n")
+        print("classe: {}".format(str(classe)))
+        texto +=  ("c{}\n".format((str(classe))))
             
         if passo == intervalo_de_escrita:
             arq = open("saidaFeatures.csv", "a")
@@ -73,7 +73,7 @@ if os.path.exists(caminho_img):
             arq.close()
             texto = ""
             #pega apenas as 100-a primeiras imagens da classe 
-            #a += 100 - intervalo_de_escrita 
+            a += 100 - intervalo_de_escrita 
             passo = 0
          
         a += 1
