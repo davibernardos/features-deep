@@ -13,7 +13,7 @@ import numpy as np
 import os
 
 #n_caracteristicas_coletadas = 512 + 1
-n_caracteristicas_coletadas = 3585 + 1
+n_caracteristicas_coletadas = 3584 + 1
 total_de_imagens = 1000
 intervalo_de_escrita = 10
 texto = ""
