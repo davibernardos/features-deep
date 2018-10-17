@@ -15,7 +15,7 @@ import os
 #n_caracteristicas_coletadas = 512 + 1
 n_caracteristicas_coletadas = 3585 + 1
 total_de_imagens = 1000
-intervalo_de_escrita = 6
+intervalo_de_escrita = 10
 texto = ""
 caminho_img = os.path.abspath("imagens")
 
@@ -73,7 +73,7 @@ if os.path.exists(caminho_img):
             arq.close()
             texto = ""
             #pega apenas as 100-a primeiras imagens da classe 
-            a += 100 - intervalo_de_escrita 
+            #a += 100 - intervalo_de_escrita 
             passo = 0
          
         a += 1
