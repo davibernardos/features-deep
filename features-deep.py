@@ -15,7 +15,7 @@ import os
 #n_caracteristicas_coletadas = 512 + 1
 n_caracteristicas_coletadas = 3585 + 1
 total_de_imagens = 1000
-intervalo_de_escrita = 10
+intervalo_de_escrita = 6
 texto = ""
 caminho_img = os.path.abspath("imagens")
 
@@ -42,7 +42,7 @@ if os.path.exists(caminho_img):
     
     a = 0
     passo = 1
-    while a <= total_de_imagens:    
+    while a < total_de_imagens:    
         if os.name == "posix":
             img_path = "{}/{}.jpg".format(caminho_img, str(a))
         else:
@@ -73,7 +73,7 @@ if os.path.exists(caminho_img):
             arq.close()
             texto = ""
             #pega apenas as 100-a primeiras imagens da classe 
-            #a += 90 
+            a += 100 - intervalo_de_escrita 
             passo = 0
          
         a += 1
